@@ -2,6 +2,7 @@
   "name": "md-links",
   "version": "0.1.0",
   "dependencies": {
-    "jest": "^24.8.0"
+    "jest": "^24.8.0",
+    "node-fetch": "^2.6.0"
   }
 }

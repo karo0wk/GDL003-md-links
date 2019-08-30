@@ -4,21 +4,22 @@ var fs = require("fs");
 regex = /(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g
 dir = "./Documentos/Laboratoria/GDL003-social-network"
 const http = require('http');
+const fetch = require('node-fetch');
 
-const extArch = (filePath)=> {
-  return path.extname(filePath)===".md";
-};
 
 
 module.exports = { 
 
 
-extArch: extArch,
+extArch: (filePath)=> {
+  return path.extname(filePath)===".md";
+  
+},
 
 
 existentFile: () => 
     {
-      fs.stat('index.js', function(err) {
+      fs.stat('index.js', (err) => {
         if (err == null) {
           console.log("El archivo existe");
         } else if (err.code == 'ENOENT') {
@@ -35,9 +36,10 @@ existentFile: () =>
     {
       fs.readFile(fileP, (error, data)=>{
         if(error){
-          throw error;
+          console.log(error)
         }
-        callback(data);
+        return callback(data);
+        
       });
     },
 
@@ -60,19 +62,26 @@ existentFile: () =>
           }
           callback(data)
         
-        
           const http = require('http');
       });
     },
 
 
-/*
-caliz: ()=> { 
-  var string = "Acerca de Node.js - Documentación oficial](https://nodejs.org/es/about/)"; 
-  var result = string.match(/(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?/g); 
-  console.log("Output : " + result); 
+validateLinks: (link)=> {
+    return new Promise(function(resolve, reject) {
+        fetch(link)
+            .then(res => {
+                resolve(res.statusText); 
+                console.log(res.statusText);
+            })
+            .catch((err) => {
+                const error = err.code;
+                if (error === 'ENOTFOUND') {
+                    reject('fail');
+                }
+            });
+      });
+  }
+
 }
-*/
 
-
-};
